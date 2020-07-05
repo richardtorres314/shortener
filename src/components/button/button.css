@@ -1,0 +1,18 @@
+.my-button {
+	padding: 0.5em;
+	height: 40px;
+	border-radius: 0.125em;
+	font-size: 1em;
+	cursor: pointer;
+
+	background: transparent;
+	border: 2px solid steelblue;
+	color: steelblue;
+	font-size: 1em;
+	width: 120px;
+}
+
+.my-button:hover {
+	color: #fafafa;
+	background-color: steelblue;
+}
