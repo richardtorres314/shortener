@@ -2,6 +2,7 @@ const Path = require('path');
 
 module.exports = {
 	mode: 'production',
+	entry: './src/Index.tsx',
 	resolve: {
 		extensions: [
 			'.ts',
@@ -34,4 +35,4 @@ module.exports = {
 		path: Path.join(__dirname, 'dist/assets'),
 		publicPath: '/'
 	}
-}
+};
