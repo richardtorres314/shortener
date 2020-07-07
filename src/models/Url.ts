@@ -4,7 +4,7 @@ export interface UrlDocument extends Document {
   url: string
 }
 
-const urlSchema = new Schema({
+const urlSchema = new Schema<UrlDocument>({
   url: {
     type: String,
     required: true

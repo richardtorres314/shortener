@@ -1,20 +1,20 @@
-import * as dns from 'dns';
 import * as dotenv from 'dotenv';
 import * as Inert from '@hapi/inert';
 import * as mongoose from 'mongoose';
 import * as Path from 'path';
-import { Request, Server } from '@hapi/hapi';
-import { Url } from './models/Url';
+import { getRoute } from './routes/get.route';
+import { postRoute } from './routes/post.route';
+import { Server } from '@hapi/hapi';
 dotenv.config();
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
-const connection = mongoose
+mongoose
 	.connect(process.env.DB_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
-		serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 30s
+		serverSelectionTimeoutMS: 5000
 	})
 	.then(() => {
 		console.log("MongoDB database connection established successfully");
@@ -37,7 +37,7 @@ const server = new Server({
 async function start() {
 	try {
 		await server.register(Inert);
-		
+
 		await server.start();
 
 		server.route({
@@ -59,48 +59,23 @@ async function start() {
 		});
 
 		server.route({
+			method: 'GET',
+			path: '/{id}',
+			handler: function (request, response) {
+				return response.redirect(`/api/shorturl/${request.params.id}`);
+			}
+		})
+
+		server.route({
 			method: 'POST',
 			path: '/api/shorturl/new',
-			handler: function (request: Request) {
-				const { payload } = request;
-				const url = (payload as { url: string }).url;
-				let response: {};
+			handler: postRoute
+		});
 
-				async function dnsLookup() {
-					return new Promise((resolve, reject) => {
-						dns.lookup(url, function(error, address, family) {
-							const regex = /https?:\/\/www\.(\w+)\.(com|org|edu|net)[\/(\w+)\/(\w+)]?/g;
-							const match = url.match(regex);
-
-							if (match) {
-								const newUrl = new Url({
-									url: url
-								});
-
-								newUrl.save(function(err, doc) {
-									if (err) {
-										response = err;
-									} else {
-										response = {
-											original_url: newUrl.url,
-											short_url: newUrl._id
-										};
-									}
-								});
-							} else {
-								console.log('fuck you 3');
-								response = {
-									error: "Invalid URL"
-								};
-							}
-						});
-					});
-				}
-
-				
-
-				return response;
-			}
+		server.route({
+			method: 'GET',
+			path: '/api/shorturl/{id}',
+			handler: getRoute
 		});
 
 	} catch (err) {
