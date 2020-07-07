@@ -1,4 +1,4 @@
-### URL Shortener
+# URL Shortener
 [Demo](https://richardtorres314-shortener.glitch.me/)
 
 Shortens a URL and returns the rate of compression (length comparison of old URL to new shortened URL)
