@@ -40,6 +40,8 @@ async function start() {
 
 		await server.start();
 
+		console.log(`Server running at ${server.info.uri}`);
+
 		server.route({
 			method: 'GET',
 			path: '/assets/{param*}',
@@ -82,8 +84,6 @@ async function start() {
 		console.log(err);
 		process.exit(1);
 	}
-
-	console.log(`Server running at ${server.info.uri}`);
 }
 
 start();
