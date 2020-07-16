@@ -11,4 +11,4 @@ const urlSchema = new Schema<UrlDocument>({
   }
 });
 
-export const Url = model<UrlDocument>("Url", urlSchema, "urls");
+export const Url = model<UrlDocument>('Url', urlSchema, 'urls');
